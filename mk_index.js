@@ -74,7 +74,7 @@
         var ndx = crossfilter(data);
         var ndxGroupAll = ndx.groupAll();
         
-        var townId = ndx.dimension(function(d) { return d["TOWN_ID"]; });
+        var townIdDim = ndx.dimension(function(d) { return d["TOWN_ID"]; });
      
         var facilities = ndx.dimension(function(d) { return d["geo1"]; });
         var facilitiesGroup = facilities.group().reduceCount();
@@ -86,7 +86,7 @@
         var LandslideGroup = hourdim.group().reduceSum(function(d){return d.Landslide1;});
         var TrafficGroup = hourdim.group().reduceSum(function(d){return d.Traffic1;});
         var countyDim  = ndx.dimension(function(d) {return d["C_Name"];});
-        var county_Disasters = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
+        //var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
 
         var colorScale = d3.scale.ordinal().domain(["淹水", "坡地災害", "交通中斷", "淹水&坡地災害", "淹水&交通中斷", "交通中斷&坡地災害", "淹水&交通中斷&坡地災害"])
           .range(["#14999e", "#ECA400", "#E85F5C", "#999999", "#999999", "#999999", "#999999"]);
@@ -178,7 +178,7 @@
 
         var dataTable = dc.dataTable('#dc-table-graph')
             .width(680)
-            .dimension(townId)
+            .dimension(townIdDim)
             .group(function (d) {return d.date; })
             .size(Infinity)
             .columns([
