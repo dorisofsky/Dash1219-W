@@ -73,25 +73,23 @@
 
         var ndx = crossfilter(data);
         var ndxGroupAll = ndx.groupAll();
-        
-        var townIdDim = ndx.dimension(function(d) { return d["TOWN_ID"]; });
      
         var geo1Dim = ndx.dimension(function(d) { return d["geo1"]; });
         var geo1Group = geo1Dim.group().reduceCount();
 
+        var countyDim  = ndx.dimension(function(d) {return d["C_Name"];});
+        var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
+        var townIdDim = ndx.dimension(function(d) { return d["TOWN_ID"]; });
+
         var disastertypes = ndx.dimension(function(d){return d["disastertype"];});
         var disastertypesGroup = disastertypes.group().reduceCount();
-        var hourdim = ndx.dimension(function(d) { return d3.time.hour(d.parseTime); });  
-
-        var timedim = ndx.dimension(function(d){return d.parseTime;});
-
         var FloodGroup = hourdim.group().reduceSum(function(d){return d.Flood1;});
         var LandslideGroup = hourdim.group().reduceSum(function(d){return d.Landslide1;});
         var TrafficGroup = hourdim.group().reduceSum(function(d){return d.Traffic1;});
 
-        var countyDim  = ndx.dimension(function(d) {return d["C_Name"];});
-        var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
-
+        var timedim = ndx.dimension(function(d){return d.parseTime;});
+        var hourdim = ndx.dimension(function(d) { return d3.time.hour(d.parseTime); });  
+        
         var colorScale = d3.scale.ordinal().domain(["淹水", "坡地災害", "交通中斷", "淹水&坡地災害", "淹水&交通中斷", "交通中斷&坡地災害", "淹水&交通中斷&坡地災害"])
           .range(["#14999e", "#ECA400", "#E85F5C", "#999999", "#999999", "#999999", "#999999"]);
 
