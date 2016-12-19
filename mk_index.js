@@ -86,15 +86,14 @@
         var FloodGroup = hourdim.group().reduceSum(function(d){return d.Flood1;});
         var LandslideGroup = hourdim.group().reduceSum(function(d){return d.Landslide1;});
         var TrafficGroup = hourdim.group().reduceSum(function(d){return d.Traffic1;});
-
-        var timedim = ndx.dimension(function(d){return d.parseTime;});
-        var hourdim = ndx.dimension(function(d) { return d3.time.hour(d.parseTime); });  
-        
         var colorScale = d3.scale.ordinal().domain(["淹水", "坡地災害", "交通中斷", "淹水&坡地災害", "淹水&交通中斷", "交通中斷&坡地災害", "淹水&交通中斷&坡地災害"])
           .range(["#14999e", "#ECA400", "#E85F5C", "#999999", "#999999", "#999999", "#999999"]);
 
+        var timedim = ndx.dimension(function(d){return d.parseTime;});
+        var hourdim = ndx.dimension(function(d) { return d3.time.hour(d.parseTime); });  
         var minTime = timedim.bottom(1)[0].parseTime;
         var maxTime = timedim.top(1)[0].parseTime;
+
 
         //cluster map - leaflet
         var MKmarker = dc_leaflet.markerChart("#map")
@@ -190,13 +189,13 @@
             .columns([
                 function(d){ return d.C_Name;},
                 function(d){ return d.T_Name;},
-                function(d){ return d.date;}, //修改
-                function(d){ return d.tt;}, //修改
+                function(d){ return d.date;}, 
+                function(d){ return d.tt;}, 
                 function(d){ return d.disastertype;},
                 function(d){ return d.situation;},
               ])
             .sortBy(function(d){
-                return d.parseTime; //修改
+                return d.parseTime; 
               })
             .order(d3.ascending);
 
