@@ -99,8 +99,8 @@
 
         //cluster map - leaflet
         var MKmarker = dc_leaflet.markerChart("#map")
-          .dimension(geo1Dim)
-          .group(geo1Group)
+          .dimension(geo1Dim) //更改
+          .group(geo1Group) //更改
           .width(380)
           .height(380)
           .center([23.5, 121])
@@ -112,7 +112,7 @@
         //disaster type pie chart
         var pie = dc.pieChart("#dis_pie")
           .dimension(disastertypes)
-          .group(disastertypesGroup)
+          .group(disastertypesGroup) //更改
           .colors(function(disastertype) {
             return colorScale(disastertype);
           })
@@ -122,7 +122,7 @@
           .renderTitle(true)
           .cap(7)
           .ordering(function(d) {
-            return disastertypesGroup;
+            return disastertypesGroup; //更改
           });
 
         //county row chart
@@ -149,14 +149,14 @@
         //filter and total count number
         var filterCount = dc.dataCount('.filter-count')
           .dimension(ndx)
-          .group(ndxGroupAll)
+          .group(ndxGroupAll) //更改
           .html({
             some: '%filter-count'
           });
 
         var totalCount = dc.dataCount('.total-count')
           .dimension(ndx)
-          .group(ndxGroupAll)
+          .group(ndxGroupAll) //更改
           .html({
             some: '/%total-count'
           });
@@ -185,7 +185,7 @@
         // data table
         var dataTable = dc.dataTable('#dc-table-graph')
             .width(680)
-            .dimension(townIdDim)
+            .dimension(townIdDim) //更改
             .group(function (d) {return d.date; })
             .size(Infinity)
             .columns([
