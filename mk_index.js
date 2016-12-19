@@ -86,7 +86,7 @@
         var LandslideGroup = hourdim.group().reduceSum(function(d){return d.Landslide1;});
         var TrafficGroup = hourdim.group().reduceSum(function(d){return d.Traffic1;});
         var countyDim  = ndx.dimension(function(d) {return d["C_Name"];});
-        //var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
+        var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
 
         var colorScale = d3.scale.ordinal().domain(["淹水", "坡地災害", "交通中斷", "淹水&坡地災害", "淹水&交通中斷", "交通中斷&坡地災害", "淹水&交通中斷&坡地災害"])
           .range(["#14999e", "#ECA400", "#E85F5C", "#999999", "#999999", "#999999", "#999999"]);
@@ -130,7 +130,7 @@
             bottom: 20
           })
           .dimension(countyDim)
-          .group(county_Disasters, "Disasters")
+          .group(countyDisastersGroup, "Disasters")
           .labelOffsetX(-45)
           .colors(d3.scale.category10())
           .elasticX(true)
