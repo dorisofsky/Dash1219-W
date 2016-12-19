@@ -76,15 +76,19 @@
         
         var townIdDim = ndx.dimension(function(d) { return d["TOWN_ID"]; });
      
-        var facilities = ndx.dimension(function(d) { return d["geo1"]; });
-        var facilitiesGroup = facilities.group().reduceCount();
+        var geo1Dim = ndx.dimension(function(d) { return d["geo1"]; });
+        var geo1Group = geo1Dim.group().reduceCount();
+
         var disastertypes = ndx.dimension(function(d){return d["disastertype"];});
         var disastertypesGroup = disastertypes.group().reduceCount();
         var hourdim = ndx.dimension(function(d) { return d3.time.hour(d.parseTime); });  
+
         var timedim = ndx.dimension(function(d){return d.parseTime;});
+
         var FloodGroup = hourdim.group().reduceSum(function(d){return d.Flood1;});
         var LandslideGroup = hourdim.group().reduceSum(function(d){return d.Landslide1;});
         var TrafficGroup = hourdim.group().reduceSum(function(d){return d.Traffic1;});
+
         var countyDim  = ndx.dimension(function(d) {return d["C_Name"];});
         var countyDisastersGroup = countyDim.group().reduceCount(function(d){return d.Flood1+d.Landslide1+d.Traffic1;});
 
@@ -94,9 +98,10 @@
         var minTime = timedim.bottom(1)[0].parseTime;
         var maxTime = timedim.top(1)[0].parseTime;
 
+        //cluster map - leaflet
         var MKmarker = dc_leaflet.markerChart("#map")
-          .dimension(facilities)
-          .group(facilitiesGroup)
+          .dimension(geo1Dim)
+          .group(geo1Group)
           .width(380)
           .height(380)
           .center([23.5, 121])
@@ -105,6 +110,7 @@
           .renderPopup(false)
           .filterByArea(true);
 
+        //disaster type pie chart
         var pie = dc.pieChart("#dis_pie")
           .dimension(disastertypes)
           .group(disastertypesGroup)
@@ -120,6 +126,7 @@
             return disastertypesGroup;
           });
 
+        //county row chart
         var countyRowChart = dc.rowChart("#chart-row-county")
           .width(380)
           .height(220)
@@ -140,8 +147,7 @@
           })
           .rowsCap(5);
 
-        
-
+        //filter and total count number
         var filterCount = dc.dataCount('.filter-count')
           .dimension(ndx)
           .group(ndxGroupAll)
@@ -156,6 +162,7 @@
             some: '/%total-count'
           });
 
+        // time bar chart
         var timechart =dc.barChart("#dis_time")
             .width(770)
             .height(250)
@@ -176,6 +183,7 @@
             .brushOn(true)
             .xAxis().tickFormat(d3.time.format('%m/%d %H:%M'));
 
+        // data table
         var dataTable = dc.dataTable('#dc-table-graph')
             .width(680)
             .dimension(townIdDim)
